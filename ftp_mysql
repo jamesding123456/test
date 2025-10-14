@@ -1,0 +1,160 @@
+-- MySQL dump 10.13  Distrib 5.7.33, for Linux (x86_64)
+--
+-- Host: localhost    Database: ftp
+-- ------------------------------------------------------
+-- Server version	5.7.33-0ubuntu0.16.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `ftp`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `ftp` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+
+USE `ftp`;
+
+--
+-- Table structure for table `ftp_close_acl`
+--
+
+DROP TABLE IF EXISTS `ftp_close_acl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ftp_close_acl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `request_id` int(11) NOT NULL,
+  `Directory` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `FTPAccount` varchar(100) NOT NULL,
+  `status` enum('pending','成功','失败') DEFAULT 'pending',
+  `closetime` datetime NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `request_id` (`request_id`),
+  CONSTRAINT `ftp_close_acl_ibfk_1` FOREIGN KEY (`request_id`) REFERENCES `ftp_close_requests` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ftp_close_acl`
+--
+
+LOCK TABLES `ftp_close_acl` WRITE;
+/*!40000 ALTER TABLE `ftp_close_acl` DISABLE KEYS */;
+INSERT INTO `ftp_close_acl` VALUES (1,2,'/MXIC/project/5678','Betty Wu/TAIWAN/MXIC','bettywu01','成功','2025-09-28 14:10:33','2025-09-28 06:10:33','2025-09-28 06:10:33'),(2,2,'/MXIC/project/5678','Bin Wu/CHINA/MXIC','binwu01','成功','2025-09-28 14:10:33','2025-09-28 06:10:33','2025-09-28 06:10:33'),(3,4,'XXXX/1345','A.L. Chen/TAIWAN/MXIC','alchen01','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(4,5,'XXXX/1234','Aaron Zhu/CHINA/MXIC','aaronzhu','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(5,6,'XXXX/1266','Aaron Zhu/CHINA/MXIC','aaronzhu','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(6,7,'XXXX/1234','Alvin Lin/TAIWAN/MXIC','alvinlin','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(7,8,'MXIC/project/9G61','Alvin Yue/CHINA/MXIC','alvinyue','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(8,9,'MXIC/project/9H21','Alvin Yue/CHINA/MXIC','alvinyue','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(9,10,'MXIC/project/9H39','Alvin Yue/CHINA/MXIC','alvinyue','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(10,11,'XXXX/1112','Alvin Yue/CHINA/MXIC','alvinyue','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(11,12,'XXXX/1112','Alvin Zhou/TAIWAN/MXIC','alvinzhou','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(12,13,'XXXX/1345','Amily Gu/CHINA/MXIC','amilygu01','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(13,14,'MXIC/project/9G64','cfkuo@mxic.com.tw','cfkuo','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(14,15,'MXIC/project/6703','Charley Ren/CHINA/MXIC','charleyren','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(15,16,'MXIC/project/9G03','Chihwei Hu/TAIWAN/MXIC','chihweihu','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(16,17,'MXIC/project/9G61','Chihwei Hu/TAIWAN/MXIC','chihwei hu','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(17,18,'MXIC/project/9H21','Chihwei Hu/TAIWAN/MXIC','chihweihu','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(18,19,'MXIC/project/9H39','Chihwei Hu/TAIWAN/MXIC','chihweihu','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(19,20,'MXIC/project/9F58','dorachang@mxic.com.tw','dorachang','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(20,21,'MXIC/project/6738','JH Wang/TAIWAN/MXIC','jh wang','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(21,22,'MXIC/project/6745','JH Wang/TAIWAN/MXIC','jhwang','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(22,23,'MXIC/project/6738','kellerzhou@mxic.com.cn','kzhou','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(23,24,'MXIC/project/6745','kellerzhou@mxic.com.cn','kzhou','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(24,25,'MXIC/project/9G03','kellerzhou@mxic.com.cn','kzhou','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(25,26,'MXIC/project/9G64','kellerzhou@mxic.com.cn','kzhou','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(26,27,'MXIC/project/6702','Kevin Peng/TAIWAN/MXIC','kevinpeng','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(27,28,'MXIC/project/6703','Kevin Peng/TAIWAN/MXIC','kevinpeng','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(28,29,'MXIC/project/6702','Maggie Zhang/CHINA/MXIC','maggiezhang','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06'),(29,30,'MXIC/project/9F58','maggiezhang@mxic.com.cn','mgzhang','成功','2025-09-28 16:12:06','2025-09-28 08:12:06','2025-09-28 08:12:06');
+/*!40000 ALTER TABLE `ftp_close_acl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ftp_close_requests`
+--
+
+DROP TABLE IF EXISTS `ftp_close_requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ftp_close_requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reqNo` varchar(50) NOT NULL,
+  `closeType` varchar(20) NOT NULL,
+  `closeReason` varchar(255) NOT NULL,
+  `status` enum('pending','完成','失败') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `reqNo` (`reqNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ftp_close_requests`
+--
+
+LOCK TABLES `ftp_close_requests` WRITE;
+/*!40000 ALTER TABLE `ftp_close_requests` DISABLE KEYS */;
+INSERT INTO `ftp_close_requests` VALUES (2,'DC140CD761BF6B4648258CF50027904E','ACL','test','完成','2025-09-28 06:10:33','2025-09-28 06:10:33'),(4,'F580F3647D2D26FF48258CFC0005B032','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(5,'C08D5BE06C84360648258CFC00052113','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(6,'757AB9BB388DF53E48258CF50027904F','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(7,'5E5035CFBDB9FDD248258CFC00052111','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(8,'880232E37B2A040948258D0300232209','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(9,'7B004725248E883648258D0300232219','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(10,'81F24AD3E715507E48258D030023221D','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(11,'ED2ADC2D3AF869ED48258C88001F1AEF','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(12,'A8792DAEA4D4412848258C88001F1AEE','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(13,'5BD8C3B9FA9BE62048258CFC0005B033','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(14,'75E5F67F7C4E133048258D0300232203','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(15,'A066C790777BE11548258D03002321F0','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(16,'1E0FA3FC501C1C3748258D03002321F8','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(17,'C33B69CF1445052B48258D0300232208','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(18,'B977C8B9ACA9A70448258D0300232217','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(19,'EE53DA83843AE3FC48258D030023221C','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(20,'6B63C4520E2F8CED48258D03002321FE','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(21,'64294B8CC0D5250048258D030023220C','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(22,'1B85A5BBFF2E0F2748258D0300232212','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(23,'D5A68B74F73E7D1F48258D030023220E','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(24,'063F661443FE471548258D0300232214','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(25,'24B5D9EBE53B2CBA48258D03002321F9','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(26,'D5C6FBCA9D8323CA48258D0300232204','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(27,'385EB3969DD5C3BF48258D03002321E2','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(28,'214ED3756209D2AB48258D03002321EE','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(29,'4EF2A359E751857A48258D03002321E5','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06'),(30,'39280B5691DC301C48258D0300232200','ACL','超过最晚审查时间未选择保持','完成','2025-09-28 08:12:06','2025-09-28 08:12:06');
+/*!40000 ALTER TABLE `ftp_close_requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `request_acl`
+--
+
+DROP TABLE IF EXISTS `request_acl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `request_acl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `request_id` int(11) NOT NULL,
+  `Directory` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `FTPAccount` varchar(100) NOT NULL,
+  `status` enum('pending','成功','失败') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `request_id` (`request_id`),
+  CONSTRAINT `request_acl_ibfk_1` FOREIGN KEY (`request_id`) REFERENCES `requests` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `request_acl`
+--
+
+LOCK TABLES `request_acl` WRITE;
+/*!40000 ALTER TABLE `request_acl` DISABLE KEYS */;
+INSERT INTO `request_acl` VALUES (1,11,'/MXIC/project/5678','Betty Wu/TAIWAN/MXIC','bettywu01','成功','2025-09-28 06:09:57','2025-09-28 06:09:57'),(2,11,'/MXIC/project/5678','Bin Wu/CHINA/MXIC','binwu01','成功','2025-09-28 06:09:57','2025-09-28 06:09:57'),(3,12,'/MXIC/project/test44','Bruce Jhong/TAIWAN/MXIC','brucejhong01','成功','2025-09-28 08:09:45','2025-09-28 08:09:45'),(4,12,'/MXIC/project/test44','Clare Sun/CHINA/MXIC','claresun01','成功','2025-09-28 08:09:45','2025-09-28 08:09:45'),(5,13,'/MXIC/project/TEST55','Angel Liang/TAIWAN/MXIC','angelliang01','成功','2025-09-28 08:31:55','2025-09-28 08:31:55'),(6,13,'/MXIC/project/TEST55','Bunny Gong/CHINA/MXIC','bunnygong01','成功','2025-09-28 08:31:55','2025-09-28 08:31:55'),(7,13,'/MXIC/project/TEST55','Jiawei Zhu/CHINA/MXIC','jiaweizhu01','成功','2025-09-28 08:31:55','2025-09-28 08:31:55');
+/*!40000 ALTER TABLE `request_acl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `requests`
+--
+
+DROP TABLE IF EXISTS `requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reqNo` varchar(50) NOT NULL,
+  `projectCode` varchar(50) NOT NULL,
+  `Directory` varchar(255) NOT NULL,
+  `status` enum('pending','完成','失败') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `reqNo` (`reqNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `requests`
+--
+
+LOCK TABLES `requests` WRITE;
+/*!40000 ALTER TABLE `requests` DISABLE KEYS */;
+INSERT INTO `requests` VALUES (11,'FTPR202509-31','5678','/MXIC/project/5678','完成','2025-09-28 06:09:57','2025-09-28 06:09:57'),(12,'FTPR202509-08','test44','/MXIC/project/test44','完成','2025-09-28 08:09:45','2025-09-28 08:09:45'),(13,'FTPR202509-09','TEST55','/MXIC/project/TEST55','完成','2025-09-28 08:31:55','2025-09-28 08:31:55');
+/*!40000 ALTER TABLE `requests` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-10-14 11:45:28
