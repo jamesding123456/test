@@ -1,0 +1,88 @@
+<?php
+header("Content-Type: application/json; charset=utf-8");
+date_default_timezone_set("Asia/Shanghai");
+
+// 获取原始数据
+$rawData = file_get_contents("php://input");
+
+// 写日志
+$logFile = __DIR__ . "/ftp_close_request.log";
+file_put_contents($logFile, date("Y-m-d H:i:s") . " 接收到关闭申请: " . $rawData . "\n", FILE_APPEND);
+
+// 解析 JSON
+$data = json_decode($rawData, true);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo json_encode([
+        "errCode" => 1,
+        "errormsg" => "JSON 解析失败"
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+// 当前操作时间
+$closetime = date("Y/m/d H:i:s");
+
+// 数据库配置
+$dsn = "mysql:host=localhost;dbname=ftp;charset=utf8mb4";
+$user = "root";
+$pass = "123456";
+
+try {
+    $pdo = new PDO($dsn, $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // 插入关闭申请表
+    $stmt = $pdo->prepare("INSERT INTO ftp_close_requests (reqNo, closeType, closeReason, status) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$data['reqNo'], $data['closeType'], $data['closeReason'], 'pending']);
+    $requestId = $pdo->lastInsertId();
+
+    // 插入 ACL 明细
+    $stmtAcl = $pdo->prepare("INSERT INTO ftp_close_acl (request_id, Directory, username, FTPAccount, status, closetime) VALUES (?, ?, ?, ?, ?, ?)");
+
+    $responseAcl = [];
+
+    foreach ($data['ACL'] as $acl) {
+        $stmtAcl->execute([$requestId, $acl['Directory'], $acl['username'], $acl['FTPAccount'], '成功', $closetime]);
+
+        // 调用关闭脚本
+        $script = "/usr/local/bin/close_ftp_user.sh";
+        $cmd = escapeshellcmd($script . " " .
+            escapeshellarg($acl['FTPAccount']) . " " .
+            escapeshellarg($acl['Directory'])
+        );
+        $output = shell_exec($cmd . " 2>&1");
+
+        file_put_contents($logFile, date("Y-m-d H:i:s") . " 执行脚本: $cmd 输出: $output\n", FILE_APPEND);
+
+        $responseAcl[] = [
+            "Directory" => $acl['Directory'],
+            "username" => $acl['username'],
+            "FTPAccount" => $acl['FTPAccount'],
+            "closeflag" => "Y",
+            "closetime" => $closetime
+        ];
+    }
+
+    // 更新关闭申请状态为完成
+    $stmt = $pdo->prepare("UPDATE ftp_close_requests SET status = '完成' WHERE id = ?");
+    $stmt->execute([$requestId]);
+
+    // 返回给客户端
+    $response = [
+        "errCode" => 0,
+        "errormsg" => "",
+        "reqNo" => $data['reqNo'],
+        "closeType" => $data['closeType'],
+        "closeReason" => $data['closeReason'],
+        "ACL" => $responseAcl
+    ];
+
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
+
+} catch (Exception $e) {
+    file_put_contents($logFile, date("Y-m-d H:i:s") . " 数据库错误: " . $e->getMessage() . "\n", FILE_APPEND);
+    echo json_encode([
+        "errCode" => 2,
+        "errormsg" => "数据库操作失败"
+    ], JSON_UNESCAPED_UNICODE);
+}
