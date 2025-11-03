@@ -1,0 +1,19 @@
+$log_file = '/var/log/ftp_change.log';
+
+$log_text = sprintf(
+
+    "[%s] curuser=%s, op_user=%s, ftp_account=%s, result=%s\n",
+
+    $log_time,
+
+    $data['curuser'] ?? 'unknown',
+
+    $data['op_user'] ?? 'unknown',
+
+    $data['ftp_account'],
+
+    $result
+
+);
+
+file_put_contents($log_file, $log_text, FILE_APPEND | LOCK_EX);
