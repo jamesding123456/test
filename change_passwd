@@ -1,0 +1,121 @@
+<?php
+
+// ======================
+
+// FTP 密码修改 API （带日志）
+
+// ======================
+
+// 请求示例：POST /ftp_change_password.php
+
+// JSON:
+
+// {
+
+//   "curuser":"Amily Gu/CHINA/MXIC",
+
+//   "op_user":"Amily Gu/CHINA/MXIC",
+
+//   "ftp_account":"amilygu",
+
+//   "old_password":"#*3hIhBEV1",
+
+//   "new_password":"password"
+
+// }
+
+
+
+
+header('Content-Type: application/json; charset=utf-8');
+
+
+
+
+// ---------- 1. 读取客户端 JSON ----------
+
+$input = file_get_contents('php://input');
+
+$data = json_decode($input, true);
+
+
+
+
+// ---------- 2. 基本校验 ----------
+
+if (!$data || !isset($data['ftp_account']) || !isset($data['new_password'])) {
+
+    echo json_encode(['error' => 'invalid json input']);
+
+    exit;
+
+}
+
+
+
+
+$ftp_account = escapeshellarg($data['ftp_account']);
+
+$new_password = escapeshellarg($data['new_password']);
+
+
+
+
+// ---------- 3. 执行修改密码 ----------
+
+$cmd = "echo {$data['ftp_account']}:{$data['new_password']} | sudo chpasswd 2>&1";
+
+exec($cmd, $output, $retcode);
+
+
+
+
+// ---------- 4. 结果与标志 ----------
+
+$log_time = date('Y-m-d H:i:s');
+
+if ($retcode === 0) {
+
+    $data['change_flag'] = 'Y';
+
+    $result = 'SUCCESS';
+
+} else {
+
+    $data['change_flag'] = 'N';
+
+    $data['error_output'] = implode("\n", $output);
+
+    $result = 'FAIL';
+
+}
+
+
+
+
+// ---------- 5. 写入日志 ----------
+
+$log_file = '/var/log/ftp_change.log';
+
+$log_text = sprintf(
+
+    "[%s] curuser=%s, op_user=%s, ftp_account=%s, result=%s\n",
+
+    $log_time,
+
+    $data['curuser'] ?? 'unknown',
+
+    $data['op_user'] ?? 'unknown',
+
+    $data['ftp_account'],
+
+    $result
+
+);
+
+file_put_contents($log_file, $log_text, FILE_APPEND | LOCK_EX);
+
+
+
+
+// ---------- 6. 输出 JSON ----------
